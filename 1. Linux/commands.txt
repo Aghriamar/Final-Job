@@ -12,3 +12,5 @@ sudo mysql -u root -p
 
 sudo dpkg -i anydesk_6.3.0-1_amd64.deb
 sudo dpkg -r anydesk_6.3.0-1_amd64
+
+history
