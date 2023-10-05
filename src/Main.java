@@ -31,12 +31,15 @@ public class Main {
                         System.out.println("Текущее значение счетчика: " + counter.getCount());
                         break;
                     case 2:
+                        showAnimalList();
                         classifyAnimal();
                         break;
                     case 3:
+                        showAnimalList();
                         listCommands();
                         break;
                     case 4:
+                        showAnimalList();
                         trainAnimal();
                         break;
                     case 5:
@@ -50,6 +53,16 @@ public class Main {
             System.out.println("Произошла ошибка: " + e.getMessage());
         }
         System.out.println("Текущее значение счетчика: " + counter.getCount());
+    }
+
+    /**
+     * Выводит список добавленных животных в реестр.
+     */
+    private static void showAnimalList() {
+        System.out.println("\nСписок добавленных животных:");
+        for (String name : registry.keySet()) {
+            System.out.println(name);
+        }
     }
 
     /**
