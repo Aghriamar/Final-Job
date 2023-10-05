@@ -1,0 +1,42 @@
+CREATE DATABASE `FriendsOfMan`;
+
+USE FriendsOfMan;
+
+CREATE TABLE `DomesticAnimals` (`ID` INT AUTO_INCREMENT PRIMARY KEY, `Name` VARCHAR(255), `Command` VARCHAR(255), `BirthDate` DATE, `Category` VARCHAR(255) );
+
+CREATE TABLE `PackAnimals` (`ID` INT AUTO_INCREMENT PRIMARY KEY, `Name` VARCHAR(255), `Command` VARCHAR(255), `BirthDate` DATE, `Category` VARCHAR(255) );
+
+INSERT INTO `DomesticAnimals` (`Name`, `Command`, `BirthDate`, `Category`)
+VALUES ('Barsik', 'Command1', '2020-05-15', 'Cats'), ('Whiskers', 'Command2', '2018-08-20', 'Cats'), ('Rex', 'Command3', '2019-02-12', 'Dogs'), ('Fluffy', 'Command4', '2017-06-30', 'Dogs'), ('Mittens', 'Command5', '2020-01-05', 'Hamsters'), ('Shadow', 'Command6', '2019-11-18', 'Hamsters');
+
+INSERT INTO `PackAnimals` (`Name`, `Command`, `BirthDate`, `Category`)
+VALUES ('Buran', 'Command7', '2017-04-10', 'Camels'), ('Ivan', 'Command8', '2019-11-30', 'Camels'), ('Thunder', 'Command9', '2018-03-25', 'Horses'), ('Spirit', 'Command10', '2019-08-15', 'Horses'), ('Rocky', 'Command11', '2017-12-08', 'Donkeys'), ('Dusty', 'Command12', '2020-02-22', 'Donkeys');
+
+CREATE TABLE `HorsesAndDonkeys` AS SELECT * FROM `PackAnimals` WHERE `Category` IN ('Horses', 'Donkeys');
+
+DELETE FROM `PackAnimals` WHERE `Category` = 'Camels';
+
+CREATE TABLE `YoungAnimals` AS SELECT *, TIMESTAMPDIFF(MONTH, `BirthDate`, NOW()) AS `AgeInMonths` FROM `DomesticAnimals` WHERE TIMESTAMPDIFF(YEAR, `BirthDate`, NOW()) BETWEEN 1 AND 3 UNION SELECT *, TIMESTAMPDIFF(MONTH, `BirthDate`, NOW()) AS `AgeInMonths` FROM `PackAnimals` WHERE TIMESTAMPDIFF(YEAR, `BirthDate`, NOW()) BETWEEN 1 AND 3;
+
+
+//version 1
+CREATE TABLE AllAnimals AS SELECT Name, Command, BirthDate, Category, NULL AS AgeInMonths FROM DomesticAnimals UNION ALL SELECT Name, Command, BirthDate, Category, NULL AS AgeInMonths FROM PackAnimals UNION ALL SELECT Name, Command, BirthDate, NULL AS Category, AgeInMonths FROM YoungAnimals UNION ALL SELECT Name, Command, BirthDate, NULL AS Category, NULL AS AgeInMonths FROM HorsesAndDonkeys;
+
+//verison 2
+CREATE TABLE `AllAnimals` (
+    `ID` INT AUTO_INCREMENT PRIMARY KEY,
+    `Name` VARCHAR(255),
+    `Command` VARCHAR(255),
+    `BirthDate` DATE,
+    `AgeInMonths` INT,
+    `Category` VARCHAR(255),
+    `PreviousCategory` VARCHAR(255)
+);
+INSERT INTO `AllAnimals` (`Name`, `Command`, `BirthDate`, `Category`, `AgeInMonths`, `PreviousCategory`)
+SELECT `Name`, `Command`, `BirthDate`, `Category`, NULL AS `AgeInMonths`, 'Domestic' FROM `DomesticAnimals`;
+INSERT INTO `AllAnimals` (`Name`, `Command`, `BirthDate`, `Category`, `AgeInMonths`, `PreviousCategory`)
+SELECT `Name`, `Command`, `BirthDate`, `Category`, NULL AS `AgeInMonths`, 'Pack' FROM `PackAnimals`;
+INSERT INTO `AllAnimals` (`Name`, `Command`, `BirthDate`, `Category`, `AgeInMonths`, `PreviousCategory`)
+SELECT `Name`, `Command`, `BirthDate`, `Category`, `AgeInMonths`, 'Young' FROM `YoungAnimals`;
+INSERT INTO `AllAnimals` (`Name`, `Command`, `BirthDate`, `Category`, `AgeInMonths`, `PreviousCategory`)
+SELECT `Name`, `Command`, `BirthDate`, `Category`, NULL AS `AgeInMonths`, 'HorsesAndDonkeys' FROM `HorsesAndDonkeys`;
