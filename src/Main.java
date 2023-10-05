@@ -3,6 +3,9 @@ import classes.Counter;
 
 import java.util.*;
 
+/**
+ * Главный класс программы для управления реестром домашних животных.
+ */
 public class Main {
     private static Map<String, Animal> registry = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
@@ -49,6 +52,9 @@ public class Main {
         System.out.println("Текущее значение счетчика: " + counter.getCount());
     }
 
+    /**
+     * Метод для добавления нового животного
+     */
     private static void addAnimal() {
         System.out.print("Введите имя животного: ");
         String name = scanner.nextLine();
@@ -71,6 +77,9 @@ public class Main {
         System.out.println(name + " успешно добавлено в реестр.");
     }
 
+    /**
+     * Метод для определения типа животного
+     */
     private static void classifyAnimal() {
         System.out.print("Введите имя животного: ");
         String name = scanner.nextLine();
@@ -83,6 +92,9 @@ public class Main {
         }
     }
 
+    /**
+     * Метод для отображения списка команд, которые выполняет животное
+     */
     private static void listCommands() {
         System.out.print("Введите имя животного: ");
         String name = scanner.nextLine();
@@ -103,6 +115,9 @@ public class Main {
         }
     }
 
+    /**
+     * Метод для обучения животного новым командам
+     */
     private static void trainAnimal() {
         System.out.print("Введите имя животного: ");
         String name = scanner.nextLine();
